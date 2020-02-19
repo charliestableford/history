@@ -5,8 +5,8 @@ import A from '../A';
 import NormalImg from '../Img';
 
 const Img = styled(NormalImg)`
-  width: 11.58rem;
-  height: 2.82rem;
+  width: 200px;
+  height: 100px;
 `;
 
 const Thumb = ({ onClick, src }) => (

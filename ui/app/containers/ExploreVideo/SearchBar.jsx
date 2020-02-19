@@ -1,5 +1,8 @@
 /* global URL, window */
 import React from 'react';
+// import SearchBar from '../../components/SearchBar';
+
+// the search bar in the input text and dropdown at the top of the screen
 
 export default class SearchBar extends React.Component {
   constructor(props) {
@@ -9,6 +12,7 @@ export default class SearchBar extends React.Component {
     const searchValue = geocode || SearchBar.defaults.geocode;
     const { searchOrder } = SearchBar.defaults;
     this.state = { searchValue, searchOrder };
+
   }
 
   componentDidMount() {
@@ -54,6 +58,7 @@ export default class SearchBar extends React.Component {
 
   static get defaults() {
     return {
+      //default when loading
       geocode: '13.7524000,100.5021833',
       instruction: 'Keyword or GeoCode',
       searchOrder: 'relevance',
@@ -76,7 +81,7 @@ export default class SearchBar extends React.Component {
     } = this.state;
 
     return (
-      <section id="search-bar">
+      <section id="search-bar" className="text-center" style={{margin: "50px" }}>
         <input
           onChange={event => this.onSearchChange(event.target.value)}
           placeholder={SearchBar.defaults.instruction}

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+// this is the buttons at the top of the page
 export default styled(Link)`
   display: inline-flex;
   padding: 0.25em 2em;
@@ -15,8 +16,8 @@ export default styled(Link)`
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 16px;
-  border: 2px solid #41addd;
-  color: #41addd;
+  background: #f50057;
+  color: white;
 
   &:active {
     background: #41addd;
