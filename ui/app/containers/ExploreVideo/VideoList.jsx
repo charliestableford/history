@@ -12,8 +12,8 @@ export default function VideoList(props) {
   const videoItems = videos.map((video, index) => <VideoListItem index={index} onVideoSelect={onVideoSelect} key={video.etag} video={video} />);
 
   return (
-    <nav id="video-list">
+    <ul id="video-list">
       {videoItems}
-    </nav>
+    </ul>
   );
 }

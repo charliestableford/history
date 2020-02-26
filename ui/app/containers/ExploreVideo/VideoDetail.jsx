@@ -1,15 +1,18 @@
 import React from 'react';
 
+
 export default function VideoDetail({ video }) {
-  if (!video) {
+  if (!video) { // if there is no video - the video will load multiple time. If there is no video then we display a spinner, if there is a video than we can try to show it.
     return (
       <section>
-        Loading...
+        Loading media...
       </section>
     );
   }
 
+  // this is the video player
   const { videoId } = video.id;
+  // url is the embedded video. It is the easier version of an API
   const url = `https://www.youtube.com/embed/${videoId}`;
 
   return (

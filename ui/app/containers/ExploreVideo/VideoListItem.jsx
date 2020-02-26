@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 
 function handleKeyPress(event) {
@@ -6,21 +7,28 @@ function handleKeyPress(event) {
     event.target.click();
   }
 }
-
+// these are props that are getting passed in by the partent - the partent needs to provide the index, video and onVideoSelect.
 export default function VideoListItem({ index, video, onVideoSelect }) {
   const tabOffset = 2;
   // getting data from youtube, provided to us, dot syntax to get us to the thumbnail path.
   const imageUrl = video.snippet.thumbnails.default.url;
 
+
+  const VideoListItem = styled.li`
+    list-style: none;
+    margin: 20px;
+    display: inline-block;
+    // float: left;
+    `
+
   return (
-    // these are the thumbnails you can tell by the alt tag
+  <VideoListItem>
     <div className="video-list-media" onClick={() => onVideoSelect(video)} onKeyPress={handleKeyPress} role="button" tabIndex={tabOffset + index}>
-      <div className="media-thumbnail" style={{float: "left", width: "200px", margin: "10px"}}>
         <img src={imageUrl} alt="Video thumbnail" />
-      </div>
-      <div className="media-heading" style={{color: "white", display: "none"}}>
+      <div className="media-heading" style={{display: "none"}}>
         {video.snippet.title}
       </div>
-    </div>
+      </div>
+      </VideoListItem>
   );
 }

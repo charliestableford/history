@@ -1,107 +1,73 @@
 /* global URL, window */
-import React from 'react';
-// import SearchBar from '../../components/SearchBar';
+import React, { useEffect, useState } from 'react';
 
-// the search bar in the input text and dropdown at the top of the screen
+// I could change the search bar to combine the calls and then wait for the reply, right now it can only alk to one api call
 
-export default class SearchBar extends React.Component {
-  constructor(props) {
-    super(props);
+const defaults = {
+  geocode: '13.7524000,100.5021833',
+  instruction: 'Keyword or GeoCode',
+  searchOrder: 'relevance',
+};
 
-    const geocode = SearchBar.getGeoCode(SearchBar.getQS());
-    const searchValue = geocode || SearchBar.defaults.geocode;
-    const { searchOrder } = SearchBar.defaults;
-    this.state = { searchValue, searchOrder };
+const getQS = () => ((typeof URL === 'undefined') ? '' : new URL(window.location.href).search);
 
-  }
+// output sample '49.25,-123.1' or ''
+function getGeoCode(qs) {
+  const matches = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/.exec(qs);
+  return (matches) ? matches[0] : '';
+}
 
-  componentDidMount() {
-    const {
-      onSearchChange,
-    } = this.props;
+export default function SearchBar({
 
-    const {
-      searchOrder,
-      searchValue,
-    } = this.state;
+  onSearchChange: changeSearch,
+}) {
+  // the use State needs to live within the component. This means that the cat button needs to live in the component.
+  const [searchOrder, setSearchOrder] = useState(defaults.searchOrder);
 
-    onSearchChange(searchValue, { searchOrder });
-  }
+  const [searchValue, setSearchValue] = useState(getGeoCode(getQS()) || defaults.geocode);
+  // this is the bare bones that the useState can be.
+  // first item in this array is a variable representing the state.
+  useEffect(() => {
+    changeSearch(searchValue, { searchOrder });
+  }, []);
 
-  onSearchChange(searchValue) {
-    const {
-      onSearchChange,
-    } = this.props;
+  const handleSearchChange = (keyword) => {
+    setSearchValue(keyword);
 
-    const {
-      searchOrder,
-    } = this.state;
+    changeSearch(keyword, { searchOrder });
+  };
 
-    this.setState({ searchValue });
+  const onOrderChange = (order) => {
+    setSearchOrder(order);
 
-    onSearchChange(searchValue, { searchOrder });
-  }
+    changeSearch(searchValue, { searchOrder: order });
+  };
 
-  onOrderChange(searchOrder) {
-    const {
-      onSearchChange,
-    } = this.props;
 
-    const {
-      searchValue,
-    } = this.state;
+  return (
 
-    this.setState({ searchOrder });
+    <section id="search-bar">
+      <input
+        onChange={event => handleSearchChange(event.target.value)}
+        placeholder={defaults.instruction}
+        title={defaults.instruction}
+        placeholder="Search"
+        value={searchValue}
+        tabIndex="1"
+      />
+      <select
+        defaultValue="relevance"
+        onChange={event => onOrderChange(event.target.value)}
+        tabIndex="2"
+      >
+        <option value="date">
+          Date of creation
+        </option>
+        <option value="relevance">
+          Relevance
+        </option>
+      </select>
 
-    onSearchChange(searchValue, { searchOrder });
-  }
-
-  static get defaults() {
-    return {
-      //default when loading
-      geocode: '13.7524000,100.5021833',
-      instruction: 'Keyword or GeoCode',
-      searchOrder: 'relevance',
-    };
-  }
-
-  static getQS() {
-    return (typeof URL === 'undefined') ? '' : new URL(window.location.href).search;
-  }
-
-  // output sample '49.25,-123.1' or ''
-  static getGeoCode(qs) {
-    const matches = /(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/.exec(qs);
-    return (matches) ? matches[0] : '';
-  }
-
-  render() {
-    const {
-      searchValue,
-    } = this.state;
-
-    return (
-      <section id="search-bar" className="text-center" style={{margin: "50px" }}>
-        <input
-          onChange={event => this.onSearchChange(event.target.value)}
-          placeholder={SearchBar.defaults.instruction}
-          title={SearchBar.defaults.instruction}
-          value={searchValue}
-          tabIndex="1"
-        />
-        <select
-          defaultValue="relevance"
-          onChange={event => this.onOrderChange(event.target.value)}
-          tabIndex="2"
-        >
-          <option value="date">
-            Date of creation
-          </option>
-          <option value="relevance">
-            Relevance
-          </option>
-        </select>
-      </section>
-    );
-  }
+    </section>
+  );
 }
